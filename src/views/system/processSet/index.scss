@@ -1,0 +1,137 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+#vue-g6-editor {
+  header {
+    &:nth-of-type(1) {
+      background: #fbfbfb;
+      line-height: 40px;
+      padding-left: 20px;
+      border-bottom: 1px solid #dadce0;
+      box-sizing: border-box;
+    }
+  }
+  #toolbar {
+    background: #fbfbfb;
+    border-bottom: 1px solid #dadce0;
+    padding: 4px 14px;
+    i {
+      font-size: 18px;
+      padding: 4px;
+      margin-right: 8px;
+      color: #999999;
+      &:hover {
+        cursor: pointer;
+        background-color: #eeeeee;
+        color: #5cb6ff;
+      }
+    }
+  }
+  #itempannel {
+    box-sizing: border-box;
+    background-color: #fbfbfb;
+    border-right: 1px solid #dadce0;
+    height: calc(100vh - 41px - 37px);
+    padding-top: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    .getItem {
+      cursor: move;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  #page {
+    height: calc(100vh - 41px - 37px);
+    canvas {
+      display: block;
+      width: 100%;
+    }
+  }
+  .right-part {
+    height: calc(100vh - 41px - 37px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  #detailpannel {
+    flex-grow: 1;
+    background-color: #fbfbfb;
+    border-left: 1px solid #dadce0;
+    overflow-y: scroll;
+  }
+  #minimap {
+    background-color: #fbfbfb;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    .title {
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      box-sizing: border-box;
+      font-weight: bold;
+      font-size: 13px;
+      border-width: 0 0 1px 0;
+      border-style: solid;
+      border-color: #dadce0;
+    }
+  }
+  #contextmenu {
+    display: none;
+    .menu {
+      /deep/ {
+        .el-button {
+          width: 100%;
+          display: block;
+          margin-left: 0;
+          border-radius: 0 !important;
+          border-bottom: none;
+          &:nth-last-of-type(1) {
+            border-bottom: 1px solid #dcdfe6;
+          }
+        }
+      }
+    }
+  }
+  .save-as-image-dialog {
+    /deep/ {
+      .el-select {
+        display: block;
+      }
+    }
+  }
+}
+#vue-g6-editor #detailpannel #nodeAttributeBar .title,
+#vue-g6-editor #detailpannel #edgeAttributeBar .title,
+#vue-g6-editor #detailpannel #groupAttributeBar .title,
+#vue-g6-editor #detailpannel #canvasAttributeBar .title,
+#vue-g6-editor #detailpannel #multiAttributeBar .title {
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: 13px;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: #dadce0;
+}
+#vue-g6-editor #detailpannel #nodeAttributeBar .main,
+#vue-g6-editor #detailpannel #edgeAttributeBar .main,
+#vue-g6-editor #detailpannel #groupAttributeBar .main,
+#vue-g6-editor #detailpannel #canvasAttributeBar .main,
+#vue-g6-editor #detailpannel #multiAttributeBar .main {
+  padding: 10px;
+}

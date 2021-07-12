@@ -1,0 +1,78 @@
+{
+  "nodes": [
+    {
+      "color": "#FA8C16",
+      "id": "d075bf73",
+      "index": 0,
+      "label": "开始节点",
+      "nodetype": "startNode",
+      "shape": "flow-circle",
+      "size": "72*72",
+      "type": "node",
+      "x": 108.08333206176758,
+      "y": 77.55555725097656
+    },
+    {
+      "color": "#1890ff",
+      "id": "036ec623",
+      "index": 1,
+      "label": "常规节点",
+      "size": "100*50",
+      "type": "node",
+      "x": 118.08333206176758,
+      "y": 224.55555725097656
+    },
+    {
+      "color": "#13C2C2",
+      "id": "107402ad",
+      "index": 2,
+      "label": "条件节点",
+      "shape": "flow-rhombus",
+      "size": "80*80",
+      "type": "node",
+      "x": 118.08333206176758,
+      "y": 401.55555725097656
+    },
+    {
+      "color": "#FA8C16",
+      "id": "094de815",
+      "index": 3,
+      "label": "结束节点",
+      "nodetype": "endNode",
+      "shape": "flow-circle",
+      "size": "80*80",
+      "type": "node",
+      "x": 115.08333206176758,
+      "y": 592.5555572509766
+    }
+  ],
+  "edges": [
+    {
+      "id": "d70e1522",
+      "index": 4,
+      "shape": "flow-polyline",
+      "source": "d075bf73",
+      "sourceAnchor": 2,
+      "target": "036ec623",
+      "targetAnchor": 0
+    },
+    {
+      "id": "07d804b1",
+      "index": 5,
+      "shape": "flow-polyline",
+      "source": "036ec623",
+      "sourceAnchor": 2,
+      "target": "107402ad",
+      "targetAnchor": 0
+    },
+    {
+      "id": "547ec2a1",
+      "index": 6,
+      "shape": "flow-polyline",
+      "source": "107402ad",
+      "sourceAnchor": 2,
+      "target": "094de815",
+      "targetAnchor": 0
+    }
+  ]
+}

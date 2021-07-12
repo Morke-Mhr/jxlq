@@ -1,0 +1,353 @@
+<template>
+  <div class="safe_main">
+    <!-- 搜索头 -->
+    <div class="sxForm">
+      <el-form ref="form" :model="form" :inline="true" class="demo-form-inline">
+        <el-form-item label="创建人">
+          <el-input v-model="form.createByName"></el-input>
+        </el-form-item>
+        <el-form-item label="任务类型">
+          <el-select v-model="form.type" clearable placeholder="请选择任务类型">
+            <el-option
+              v-for="(item, index) of typeType"
+              :key="index"
+              :label="item.dictLabel"
+              :value="item.dictCode"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="责任人">
+          <el-input v-model="form.chargerName"></el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select
+            v-model="form.status"
+            clearable
+            placeholder="请选择任务状态"
+          >
+            <el-option
+              v-for="(item, index) of optionalstate"
+              :key="index"
+              :label="item.laber"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <div class="btnCont">
+          <el-button class="chaxun" v-has="has.getlist" @click="query"
+            >查询</el-button
+          >
+          <el-button class="chongzhi" @click="Reset">重置</el-button>
+        </div>
+      </el-form>
+    </div>
+    <div class="sxTable">
+      <el-button class="blue" @click="taskexport" :loading="exportloading"
+        >导出</el-button
+      >
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="light"
+        style="width: 100%"
+        height="calc(100vh - 370px)"
+        @selection-change="handleSelectionChange"
+        v-loading="loading"
+        stripe
+      >
+        <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+        <el-table-column
+          label="类型"
+          width="120"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope">{{ scope.row.typeName }}</template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="名称"
+          width="200"
+          show-overflow-tooltip
+          align="center"
+        ></el-table-column>
+        <el-table-column
+          prop="content"
+          label="目标"
+          width="200"
+          show-overflow-tooltip
+          align="center"
+        ></el-table-column>
+
+        <!-- <el-table-column
+          label="权重"
+          width="80"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope"
+            >{{ scope.row.priority }}级</template
+          >
+        </el-table-column> -->
+        <!-- <el-table-column
+          label="难度"
+          width="80"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.difficultDegree | difficulty }}
+          </template>
+        </el-table-column> -->
+        <el-table-column
+          prop="createBy"
+          label="发起人"
+          width="100"
+          show-overflow-tooltip
+          align="center"
+        ></el-table-column>
+
+        <el-table-column
+          label="责任人"
+          width="100"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope">{{ scope.row.personLiable }}</template>
+        </el-table-column>
+        <el-table-column
+          label="状态"
+          width="80"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.status | status }}
+          </template>
+        </el-table-column>
+		
+        <!-- <el-table-column
+          label="时长"
+          width="120"
+          show-overflow-tooltip
+          align="center"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.costTime }}{{ scope.row.costTimeUnit | costTimeUnit }}
+          </template>
+        </el-table-column> -->
+		<el-table-column
+		  label="开始时间"
+		  width="120"
+		  show-overflow-tooltip
+		  align="center"
+		>
+		  <template slot-scope="scope">
+		    {{ scope.row.startTime }}
+		  </template>
+		</el-table-column>
+		<el-table-column
+		  label="结束时间"
+		  width="120"
+		  show-overflow-tooltip
+		  align="center"
+		>
+		  <template slot-scope="scope">
+		    {{ scope.row.endTime }}
+		  </template>
+		</el-table-column>
+		
+        <el-table-column
+          prop="hintMessage"
+          label="说明/提示"
+          show-overflow-tooltip
+        ></el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
+        background
+        layout="total, prev, pager, next,sizes,jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
+  </div>
+</template>
+<script>
+import { gettask } from '@/api/task/iCreated/index' //查询任务接口
+import { getSelectType } from '@/api/task/iCreated/index' //字典
+import axios from 'axios'
+import { getToken } from '@/utils/auth'
+export default {
+  data() {
+    return {
+      has: {
+        getlist: 'task:task:list'
+      },
+      form: {},
+      currentPage: 1, //当前页数
+      total: 0, //总条目
+      pageSize: 10,
+      tableData: [],
+      multipleSelection: [], //已选中数组
+      optionalstate: [
+        { laber: '待发布', value: 1 },
+        { laber: '已发布', value: 2 },
+        { laber: '待执行', value: 3 },
+        { laber: '已执行', value: 4 },
+        { laber: '待完成', value: 5 },
+        { laber: '已完成', value: 6 },
+        // { laber: "待审核", value: 7 },
+        // { laber: "已审核", value: 7 },
+        { laber: '待验收', value: 8 },
+        { laber: '已验收', value: 9 },
+        { laber: '已逾期', value: 10 },
+        { laber: '已结束', value: 11 }
+      ],
+      typeType: [],
+      loading: false,
+      treedata: [],
+      name: '',
+      exportloading: false
+    }
+  },
+  created() {
+    this.loading = true
+    this.getsele()
+    this.$store.state.tabActive = 'coordination'
+  },
+  methods: {
+    async getTask() {
+      //查找我协同的
+      this.loading = true
+      let params = {
+        pageSize: this.pageSize,
+        pageNum: this.currentPage,
+        operateType: 'synergy',
+        createByName: this.form.createByName,
+        typeId: this.form.type,
+        chargerName: this.form.chargerName,
+        status: this.form.status
+      }
+      const res = await gettask(params)
+      this.tableData = res.rows //任务列表
+      for (let item of this.tableData) {
+        item.personLiable = item.taskUserList.filter(
+          (obj) => obj.userType === 1
+        )
+        if (item.personLiable.length > 0) {
+          item.personLiable = item.personLiable[0].userName
+        } else {
+          item.personLiable = ''
+        }
+        item.typeName = this.filet(item.typeId, this.typeType)
+      }
+      this.total = res.total
+      this.loading = false
+    },
+    // 查询
+    query() {
+      this.pageSize = 10
+      this.currentPage = 1
+      this.getTask()
+    },
+    // 重置
+    Reset() {
+      this.form = {}
+      this.pageSize = 10
+      this.currentPage = 1
+      this.getTask()
+    },
+    // 过滤
+    filet(id, idList) {
+      if (!Array.isArray(idList)) {
+        return
+      }
+      id = idList.filter((item) => item.dictCode == id)
+      if (id.length > 0) {
+        id = id[0].dictLabel
+      } else {
+        id = ''
+      }
+      return id
+    },
+    async getsele() {
+      this.typeType = await getSelectType('task_Type')
+      this.getTask()
+    },
+    // 导出
+    async taskexport() {
+      // 导出接口
+      let vm = this
+      vm.exportloading = true
+      axios({
+        method: 'get',
+        url:
+          this.$store.state.apiConfiguration.url +
+          this.$store.state.serviceName.task +
+          '/task/collaborationExport',
+        responseType: 'blob', // 表明返回服务器返回的数据类型
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: getToken()
+        },
+        //接口参数
+        params: {
+          createByName: this.form.createByName,
+          typeId: this.form.type,
+          chargerName: this.form.chargerName,
+          status: this.form.status
+        }
+      }).then(function(response) {
+        //创建一个隐藏的a连接，
+        const link = document.createElement('a')
+        let blob = new Blob([response.data], {
+          type: 'application/vnd.ms-excel'
+        })
+        link.style.display = 'none'
+        //设置连接
+        link.href = URL.createObjectURL(blob)
+        link.download = '我协同的任务.xlsx'
+        document.body.appendChild(link)
+        //模拟点击事件
+        link.click()
+        vm.exportloading = false
+      })
+    },
+    //全选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      console.log(this.multipleSelection)
+    },
+    handleSizeChange(val) {
+      //分页
+      console.log(`每页 ${val} 条`)
+      this.pageSize = val
+      this.getTask()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.currentPage = val
+      this.getTask()
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.task-header {
+  margin: 1.5rem;
+}
+.task-header-sort {
+  display: flex;
+}
+.task-header-sort > div {
+  width: 15%;
+  height: 100%;
+  align-self: center;
+  cursor: pointer;
+}
+</style>

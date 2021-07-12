@@ -1,0 +1,46 @@
+@import './config.scss';
+
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+
+@mixin respond-to ($breakpoint) {
+  $query: map-get($breakpoints, $breakpoint);
+  // 这里是scss error提示
+  @if not $query {
+    @error 'No value found for `#{$breakpoint}`. Please make sure it is
+    defined in `$breakpoints` map.';
+  }
+   // 具体断点解释在这里，校验了$query合法性
+  @media #{if(type-of($query) == 'string', unquote($query), inspect($query))}
+   {
+    @content;
+  }
+}

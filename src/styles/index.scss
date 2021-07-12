@@ -1,0 +1,241 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ' ';
+    clear: both;
+    height: 0;
+  }
+}
+
+.el-form--inline .el-form-item {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.query-btn {
+  background-color: #5583fe;
+  border-color: #005ebc;
+  color: #ffffff;
+  border: 1px solid #5583fe;
+}
+
+.reset-btn {
+  background: #fff;
+  border: 1px solid #dcdfe6;
+}
+.query-btn,
+.reset-btn {
+  width: 85px;
+  font-size: 16px;
+  padding: 0px;
+  text-align: center;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+.query-btn,
+.reset-btn,
+.el-form-item {
+  margin-bottom: 10px !important;
+}
+
+/* 分页样式开始 */
+.el-pagination {
+  margin-top: 10px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.el-pagination__total {
+  font-weight: 700;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  border: 1px solid #7facff;
+  border-radius: 5px;
+  color: #ffffff;
+  background: #5583fe;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  border: 1px solid #e4e4e4;
+  color: #454545;
+  background: #fff;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  border: 1px solid #7facff;
+  border-radius: 5px;
+  color: #008bff;
+  background: #fff;
+}
+/* 分页样式结束 */
+
+.openSidebar .navbar {
+  width: calc(100% - 210px) !important;
+}
+
+.nest-menu .is-active {
+  background-color: #5583fe !important;
+}
+
+.el-pagination .el-input__inner {
+  font-weight: 700;
+}
+
+.book-index,
+.people-index {
+  .el-table__fixed-right::before {
+    content: none;
+  }
+}
+
+.el-button--text {
+  color: #5583fe;
+}
+
+//导入按钮
+.table-import-btn {
+  background-color: #5583fe;
+  color: #ffffff;
+  padding: 0px;
+  width: 85px;
+}
+
+//新增按钮
+.table-add-btn {
+  background-color: #32c5ff;
+  padding: 0px;
+  width: 85px;
+  color: #ffffff;
+}
+
+//默认按钮
+.table-default-btn {
+  padding: 0px;
+  width: 85px;
+}
+
+//确定保存按钮
+.confirm-btn {
+  width: 69px;
+  background: #5583fe;
+  padding: 0px;
+  color: #ffffff;
+}
+
+.el-button.confirm-btn {
+  line-height: 30px;
+}
+
+//取消按钮
+.cancel-btn {
+  padding: 0px;
+  width: 69px;
+}
+
+.avatar-container img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+  top: 15px;
+  left: 5px;
+}
+
+//去掉打印功能的页面页脚
+@page {
+  size: auto;
+  /* auto is the initial value */
+  margin: 3mm;
+  /* this affects the margin in the printer settings */
+}
+
+//查询日历样式
+.el-range-editor.el-input__inner {
+  padding: 0px 15px;
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+.el-input.is-disabled .el-input__inner {
+  background-color: #ffffff;
+  border-color: #e4e7ed;
+  color: #333;
+  cursor: not-allowed;
+}
+
+.el-textarea.is-disabled .el-textarea__inner {
+  background-color: #ffffff;
+  border-color: #e4e7ed;
+  color: #333;
+  cursor: not-allowed;
+}
+
+#app .hideSidebar .router-link-active > li {
+  background: linear-gradient(to right, $menuBg, $menuHover) !important;
+}
+//字数限制背景透明
+.el-textarea .el-input__count,
+.el-input .el-input__count .el-input__count-inner {
+  background: none !important;
+}
+
+// 限制长度的input样式
+.el-input__inner[maxlength] {
+  padding-right: 45px;
+}
